@@ -19,9 +19,22 @@ declare interface MPPluginEvent {
 }
 
 declare class MPPlatformView {
+  constructor(readonly document: any);
+  attributes: any;
+  htmlElement: HTMLElement;
   elementType(): string;
   onMethodCall(method: string, params: any): Promise<any>;
-  invokeMethod(method: string, params: any, requireResult: boolean = false): Promise<any> | undefined;
+  invokeMethod(
+    method: string,
+    params: any,
+    requireResult: boolean = false
+  ): Promise<any> | undefined;
+  setSize(size: { width: number; height: number });
+  setAttributes(attributes: any);
 }
 
 declare var pluginRegisterer: MPPluginRegisterer;
+
+declare var ReactDOM: any;
+declare var React: any;
+declare var antd: any;

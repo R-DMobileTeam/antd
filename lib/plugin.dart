@@ -1,4 +1,4 @@
-export './foo/foo.dart';
+export './components/button.dart';
 
 import 'package:flutter/services.dart';
 
