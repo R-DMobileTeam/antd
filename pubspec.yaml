@@ -18,6 +18,6 @@ dependencies:
       url: https://github.com/mpflutter/mpflutter
       path: packages/mpcore
 
-dependency_overrides:
-  mpcore:
-    path: /Users/ydt/Documents/mpflutter/mpflutter/packages/mpcore
+# dependency_overrides:
+#   mpcore:
+#     path: /Users/ydt/Documents/mpflutter/mpflutter/packages/mpcore

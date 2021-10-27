@@ -41,7 +41,7 @@ packages:
     description:
       path: "packages/flutter"
       ref: HEAD
-      resolved-ref: f2b8e143c196b372692e8cfbd240f2abd92726c9
+      resolved-ref: "8136410dd6c7952413ba6b0de1d33d4bb990fe22"
       url: "https://github.com/mpflutter/mpflutter"
     source: git
     version: "0.0.0"
@@ -76,9 +76,11 @@ packages:
   mpcore:
     dependency: "direct main"
     description:
-      path: "/Users/ydt/Documents/mpflutter/mpflutter/packages/mpcore"
-      relative: false
-    source: path
+      path: "packages/mpcore"
+      ref: HEAD
+      resolved-ref: "8136410dd6c7952413ba6b0de1d33d4bb990fe22"
+      url: "https://github.com/mpflutter/mpflutter"
+    source: git
     version: "0.0.1"
   path:
     dependency: transitive
