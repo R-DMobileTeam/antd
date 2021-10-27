@@ -26,18 +26,23 @@ export class ReactComponent extends MPPlatformView {
 
   waitingGlobalScopeReady() {
     return new Promise((res) => {
-      if (!window.ReactDOM || !window.React || !window.antd) {
+      if (!window.ReactDOM || !window.React || !window.antd || !window.moment) {
       } else {
         res(true);
         return;
       }
       setTimeout(() => {
-        if (!window.ReactDOM || !window.React || !window.antd) {
+        if (
+          !window.ReactDOM ||
+          !window.React ||
+          !window.antd ||
+          !window.moment
+        ) {
           res(false);
         } else {
           res(true);
         }
-      }, 100);
+      }, 200);
     });
   }
 
