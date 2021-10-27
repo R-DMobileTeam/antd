@@ -30,6 +30,7 @@ declare class MPPlatformView {
     requireResult: boolean = false
   ): Promise<any> | undefined;
   setSize(size: { width: number; height: number });
+  clearSize(): void;
   setAttributes(attributes: any);
 }
 

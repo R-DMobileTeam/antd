@@ -50,7 +50,7 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MPPlatformViewWithIntrinsicContentSize(
-      child: MPPlatformView(
+      builder: (context) => MPPlatformView(
         viewType: 'design.ant.button',
         viewAttributes: {
           'text': text,

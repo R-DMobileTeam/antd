@@ -53,31 +53,48 @@ export class ReactComponent extends MPPlatformView {
         },
         this.attributes.text
       ),
-      this.htmlElement,
-      this.withIntrinsicContentSize()
-        ? () => {
-            var timer: any;
-            var timeToCheck = 6;
-            var checker = () => {
-              timeToCheck--;
-              if (timeToCheck < 0) {
-                clearInterval(timer);
-              }
-              const contentSize = document
-                .getElementById("d_" + this.refId)
-                ?.getBoundingClientRect();
-              if (contentSize) {
-                console.log(contentSize);
-                this.setSize({
-                  width: Math.ceil(contentSize.width),
-                  height: Math.ceil(contentSize.height),
-                });
-              }
-            };
-            timer = setInterval(checker, 4);
-            setTimeout(checker, 0);
-          }
-        : undefined
+      this.htmlElement
     );
+    if (this.withIntrinsicContentSize()) {
+      const measuringNode = this.htmlElement.cloneNode(true) as HTMLElement;
+      measuringNode.style.width = "unset";
+      measuringNode.style.height = "unset";
+      measuringNode.style.minWidth = cssLength(
+        this.attributes.layoutConstraints.minWidth
+      );
+      measuringNode.style.maxWidth = cssLength(
+        this.attributes.layoutConstraints.maxWidth
+      );
+      measuringNode.style.minHeight = cssLength(
+        this.attributes.layoutConstraints.minHeight
+      );
+      measuringNode.style.maxHeight = cssLength(
+        this.attributes.layoutConstraints.maxHeight
+      );
+      const result = measureHtmlElement(measuringNode);
+      this.setSize({ width: result.width, height: result.height });
+    }
   }
 }
+
+const cssLength = (value: string) => {
+  if (value === "Infinity") {
+    return "max-content";
+  } else {
+    return parseFloat(value) + "px";
+  }
+};
+
+const measureHtmlElement = (htmlElement: HTMLElement) => {
+  htmlElement.style.position = "fixed";
+  htmlElement.style.top = "0px";
+  htmlElement.style.left = "0px";
+  htmlElement.style.opacity = "0px";
+  document.body.appendChild(htmlElement);
+  const rect = htmlElement.getBoundingClientRect();
+  htmlElement.remove();
+  return {
+    width: rect?.width ?? 0,
+    height: rect?.height ?? 0,
+  };
+};

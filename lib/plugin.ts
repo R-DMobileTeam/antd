@@ -1,7 +1,7 @@
 /// <reference path="./plugin.d.ts" />
 
-import { Foo } from "./foo/foo";
 import { Button } from "./components/button";
+import { TypographyParagraph, TypographyText, TypographyTitle } from "./components/typography";
 
 class AntDesign {
   static installAntDesign() {
@@ -37,3 +37,15 @@ AntDesign.installReact();
 AntDesign.installAntDesign();
 
 pluginRegisterer.registerPlatformView("design.ant.button", Button);
+pluginRegisterer.registerPlatformView(
+  "design.ant.typography.title",
+  TypographyTitle
+);
+pluginRegisterer.registerPlatformView(
+  "design.ant.typography.text",
+  TypographyText
+);
+pluginRegisterer.registerPlatformView(
+  "design.ant.typography.paragraph",
+  TypographyParagraph
+);
