@@ -26,6 +26,8 @@ export class ReactComponent extends MPPlatformView {
     return [];
   }
 
+  singleChildren() {}
+
   setChildren() {}
 
   waitingGlobalScopeReady() {
@@ -36,12 +38,7 @@ export class ReactComponent extends MPPlatformView {
         return;
       }
       setTimeout(() => {
-        if (
-          !window.ReactDOM ||
-          !window.React ||
-          !window.antd ||
-          !window.moment
-        ) {
+        if (!window.ReactDOM || !window.React || !window.antd || !window.moment) {
           res(false);
         } else {
           res(true);
@@ -52,6 +49,8 @@ export class ReactComponent extends MPPlatformView {
 
   async updateRenderObject() {
     while ((await this.waitingGlobalScopeReady()) !== true) {}
+    const extraChildren = this.extraChildren();
+    const singleChildren = this.singleChildren();
     ReactDOM.render(
       React.createElement(
         this.reactClass(),
@@ -60,7 +59,11 @@ export class ReactComponent extends MPPlatformView {
           ...this.attributes,
           ...this.extraAttributes(),
         },
-        [this.attributes.text, ...this.extraChildren()]
+        singleChildren !== undefined
+          ? singleChildren
+          : extraChildren.length > 0
+          ? [this.attributes.text, ...extraChildren]
+          : this.attributes.text
       ),
       this.htmlElement
     );
@@ -68,18 +71,10 @@ export class ReactComponent extends MPPlatformView {
       const measuringNode = this.htmlElement.cloneNode(true) as HTMLElement;
       measuringNode.style.width = "unset";
       measuringNode.style.height = "unset";
-      measuringNode.style.minWidth = cssLength(
-        this.attributes.layoutConstraints.minWidth
-      );
-      measuringNode.style.maxWidth = cssLength(
-        this.attributes.layoutConstraints.maxWidth
-      );
-      measuringNode.style.minHeight = cssLength(
-        this.attributes.layoutConstraints.minHeight
-      );
-      measuringNode.style.maxHeight = cssLength(
-        this.attributes.layoutConstraints.maxHeight
-      );
+      measuringNode.style.minWidth = cssLength(this.attributes.layoutConstraints.minWidth);
+      measuringNode.style.maxWidth = cssLength(this.attributes.layoutConstraints.maxWidth);
+      measuringNode.style.minHeight = cssLength(this.attributes.layoutConstraints.minHeight);
+      measuringNode.style.maxHeight = cssLength(this.attributes.layoutConstraints.maxHeight);
       const result = measureHtmlElement(measuringNode);
       this.setSize({ width: result.width, height: result.height });
     }

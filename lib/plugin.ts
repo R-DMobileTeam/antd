@@ -3,6 +3,7 @@
 import { Breadcrumb } from "./components/breadcrumb";
 import { Button } from "./components/button";
 import { Divider } from "./components/divider";
+import { Dropdown } from "./components/dropdown";
 import {
   TypographyParagraph,
   TypographyText,
@@ -38,7 +39,8 @@ class AntDesign {
 
   static async installReact() {
     await this.loadScript(
-      "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js"
+      // "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js"
+      "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.js"
     );
     await this.loadScript(
       "https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js"
@@ -69,3 +71,4 @@ pluginRegisterer.registerPlatformView(
 );
 pluginRegisterer.registerPlatformView("design.ant.divider", Divider);
 pluginRegisterer.registerPlatformView("design.ant.breadcrumb", Breadcrumb);
+pluginRegisterer.registerPlatformView("design.ant.dropdown", Dropdown);
