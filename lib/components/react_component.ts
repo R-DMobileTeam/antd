@@ -22,6 +22,10 @@ export class ReactComponent extends MPPlatformView {
     return {};
   }
 
+  extraChildren() {
+    return [];
+  }
+
   setChildren() {}
 
   waitingGlobalScopeReady() {
@@ -56,7 +60,7 @@ export class ReactComponent extends MPPlatformView {
           ...this.attributes,
           ...this.extraAttributes(),
         },
-        this.attributes.text
+        [this.attributes.text, ...this.extraChildren()]
       ),
       this.htmlElement
     );

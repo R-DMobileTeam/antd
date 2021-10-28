@@ -39,4 +39,5 @@ declare var pluginRegisterer: MPPluginRegisterer;
 declare var ReactDOM: any;
 declare var React: any;
 declare var antd: any;
+declare var icons: any;
 declare var moment: any;

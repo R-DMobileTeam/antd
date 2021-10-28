@@ -31,6 +31,7 @@ class Button extends StatelessWidget {
   final Function? onClick;
   final String? href;
   final String? target;
+  final String? icon;
 
   Button({
     this.text,
@@ -45,6 +46,7 @@ class Button extends StatelessWidget {
     this.onClick,
     this.href,
     this.target,
+    this.icon,
   });
 
   @override
@@ -95,6 +97,7 @@ class Button extends StatelessWidget {
           'disabled': disabled,
           'href': href,
           'target': target,
+          'icon': icon,
         }..removeWhere((key, value) => value == null),
         onMethodCall: (methodName, arguments) {
           if (methodName == 'onClick') {

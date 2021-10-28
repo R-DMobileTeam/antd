@@ -10,6 +10,6 @@ export class Divider extends ReactComponent {
   }
 
   withIntrinsicContentSize() {
-    return true;
+    return false;
   }
 }

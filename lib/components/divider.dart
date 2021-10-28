@@ -21,37 +21,53 @@ class Divider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MPPlatformViewWithIntrinsicContentSize(
-      builder: (context) => MPPlatformView(
-        viewType: 'design.ant.divider',
-        viewAttributes: {
-          'text': text,
-          'dashed': dashed,
-          'orientation': (() {
-            switch (orientation) {
-              case DividerOrientation.center:
-                return 'center';
-              case DividerOrientation.left:
-                return 'left';
-              case DividerOrientation.right:
-                return 'right';
-              default:
-                return '';
-            }
-          })(),
-          'plain': plain,
-          'type': (() {
-            switch (type) {
-              case DividerType.horizontal:
-                return 'horizontal';
-              case DividerType.vertical:
-                return 'vertical';
-              default:
-                return '';
-            }
-          })(),
-        }..removeWhere((key, value) => value == null),
-      ),
+    Widget child = MPPlatformView(
+      viewType: 'design.ant.divider',
+      viewAttributes: {
+        'text': text,
+        'dashed': dashed,
+        'orientation': (() {
+          switch (orientation) {
+            case DividerOrientation.center:
+              return 'center';
+            case DividerOrientation.left:
+              return 'left';
+            case DividerOrientation.right:
+              return 'right';
+            default:
+              return 'center';
+          }
+        })(),
+        'plain': plain,
+        'type': (() {
+          switch (type) {
+            case DividerType.horizontal:
+              return 'horizontal';
+            case DividerType.vertical:
+              return 'vertical';
+            default:
+              return 'horizontal';
+          }
+        })(),
+      }..removeWhere((key, value) => value == null),
     );
+    switch (type) {
+      case DividerType.horizontal:
+        {
+          child = Container(height: 50, child: child);
+          break;
+        }
+      case DividerType.vertical:
+        {
+          child = Container(width: 16, height: 20, child: child);
+          break;
+        }
+      default:
+        {
+          child = Container(height: 50, child: child);
+          break;
+        }
+    }
+    return child;
   }
 }
