@@ -1,35 +1,33 @@
-class Menu {
+import 'react_component.dart';
+
+class Menu extends AntInnerComponent {
   final List<MenuItem> children;
 
   Menu({
     required this.children,
-  });
-
-  Map toJson() {
-    return {
-      'children': children,
-    };
-  }
+  }) : super(
+          componentName: 'antd.Menu',
+          attributes: {},
+          children: children,
+        );
 }
 
-class MenuItem {
-  final String? text;
-  final String? href;
-  final String? target;
-  final Function? onClick;
+class MenuItem extends AntInnerComponent {
+  final List<AntComponent>? children;
 
   MenuItem({
-    this.text,
-    this.href,
-    this.target,
-    this.onClick,
-  });
-
-  Map toJson() {
-    return {
-      'text': text,
-      'href': href,
-      'target': target,
-    }..removeWhere((key, value) => value == null);
-  }
+    String? text,
+    AntIcon? icon,
+    List<AntComponent>? children,
+  })  : this.children = (() {
+          if (children != null) return children;
+          if (text != null && icon != null) return [icon, AntText(text: text)];
+          if (text != null) return [AntText(text: text)];
+          if (icon != null) return [icon];
+        })(),
+        super(
+          componentName: 'antd.Menu.Item',
+          attributes: {},
+          children: children,
+        );
 }

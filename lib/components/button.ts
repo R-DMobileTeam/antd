@@ -20,9 +20,6 @@ export class Button extends ReactComponent {
   extraAttributes() {
     return {
       onClick: this.onClick.bind(this),
-      icon: this.attributes.icon
-        ? React.createElement(icons[this.attributes.icon])
-        : undefined,
     };
   }
 }

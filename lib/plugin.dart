@@ -5,3 +5,4 @@ export './components/breadcrumb.dart';
 export './components/ant_icons.dart';
 export './components/dropdown.dart';
 export './components/menu.dart';
+export './components/react_component.dart';

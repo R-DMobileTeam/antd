@@ -1,30 +1,39 @@
 import 'package:flutter/widgets.dart';
 import 'package:mpcore/mpcore.dart';
 
+import 'react_component.dart';
+
 enum DividerOrientation { left, right, center }
 enum DividerType { horizontal, vertical }
 
 class Divider extends StatelessWidget {
-  final String? text;
+  final List<AntComponent>? children;
   final bool? dashed;
   final DividerOrientation? orientation;
   final bool? plain;
   final DividerType? type;
 
   Divider({
-    this.text,
+    String? text,
+    AntIcon? icon,
+    List<AntComponent>? children,
     this.dashed,
     this.orientation,
     this.plain,
     this.type,
-  });
+  }) : this.children = (() {
+          if (children != null) return children;
+          if (text != null && icon != null) return [icon, AntText(text: text)];
+          if (text != null) return [AntText(text: text)];
+          if (icon != null) return [icon];
+        })();
 
   @override
   Widget build(BuildContext context) {
     Widget child = MPPlatformView(
       viewType: 'design.ant.divider',
       viewAttributes: {
-        'text': text,
+        'children': children,
         'dashed': dashed,
         'orientation': (() {
           switch (orientation) {
@@ -50,6 +59,11 @@ class Divider extends StatelessWidget {
           }
         })(),
       }..removeWhere((key, value) => value == null),
+      onMethodCall: (methodName, arguments) {
+        if (children != null) {
+          AntLink.handleMethodCall(methodName, arguments, children!);
+        }
+      },
     );
     switch (type) {
       case DividerType.horizontal:

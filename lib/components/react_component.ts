@@ -22,23 +22,74 @@ export class ReactComponent extends MPPlatformView {
     return {};
   }
 
-  extraChildren() {
-    return [];
+  setChildren() {}
+
+  static makeChildren(owner: ReactComponent, children: any[]): any[] {
+    return children
+      ?.map((it: any) => {
+        if (it.type === "text") {
+          return React.createElement("span", {}, it.text);
+        } else if (it.type === "icon") {
+          return React.createElement(icons[it.data]);
+        } else if (it.type === "link") {
+          return React.createElement(
+            it.highlighted === true ? antd.Typography.Link : "span",
+            {
+              href: it.href,
+              target: it.target,
+              style: { cursor: "pointer" },
+              onClick: it.onClick
+                ? () => {
+                    owner.invokeMethod("onClick", { target: it.onClick });
+                  }
+                : undefined,
+            },
+            this.makeChildren(owner, it.children)
+          );
+        } else if (it.type === "innerComponent") {
+          try {
+            let clazz = this.getComponentClass(it.componentName);
+            return React.createElement(
+              clazz,
+              it.attributes,
+              this.makeChildren(owner, it.children)
+            );
+          } catch (error) {}
+        }
+      })
+      ?.filter((it) => it);
   }
 
-  singleChildren() {}
-
-  setChildren() {}
+  static getComponentClass(name: string) {
+    let nameComponents = name.split(".");
+    let cur: any = window;
+    for (let index = 0; index < nameComponents.length; index++) {
+      cur = cur[nameComponents[index]];
+    }
+    return cur;
+  }
 
   waitingGlobalScopeReady() {
     return new Promise((res) => {
-      if (!window.ReactDOM || !window.React || !window.antd || !window.moment) {
+      if (
+        !window.ReactDOM ||
+        !window.React ||
+        !window.icons ||
+        !window.antd ||
+        !window.moment
+      ) {
       } else {
         res(true);
         return;
       }
       setTimeout(() => {
-        if (!window.ReactDOM || !window.React || !window.antd || !window.moment) {
+        if (
+          !window.ReactDOM ||
+          !window.React ||
+          !window.antd ||
+          !window.icons ||
+          !window.moment
+        ) {
           res(false);
         } else {
           res(true);
@@ -49,8 +100,10 @@ export class ReactComponent extends MPPlatformView {
 
   async updateRenderObject() {
     while ((await this.waitingGlobalScopeReady()) !== true) {}
-    const extraChildren = this.extraChildren();
-    const singleChildren = this.singleChildren();
+    const children = ReactComponent.makeChildren(
+      this,
+      this.attributes.children
+    );
     ReactDOM.render(
       React.createElement(
         this.reactClass(),
@@ -59,11 +112,7 @@ export class ReactComponent extends MPPlatformView {
           ...this.attributes,
           ...this.extraAttributes(),
         },
-        singleChildren !== undefined
-          ? singleChildren
-          : extraChildren.length > 0
-          ? [this.attributes.text, ...extraChildren]
-          : this.attributes.text
+        children?.length === 1 ? children[0] : children
       ),
       this.htmlElement
     );
@@ -71,10 +120,18 @@ export class ReactComponent extends MPPlatformView {
       const measuringNode = this.htmlElement.cloneNode(true) as HTMLElement;
       measuringNode.style.width = "unset";
       measuringNode.style.height = "unset";
-      measuringNode.style.minWidth = cssLength(this.attributes.layoutConstraints.minWidth);
-      measuringNode.style.maxWidth = cssLength(this.attributes.layoutConstraints.maxWidth);
-      measuringNode.style.minHeight = cssLength(this.attributes.layoutConstraints.minHeight);
-      measuringNode.style.maxHeight = cssLength(this.attributes.layoutConstraints.maxHeight);
+      measuringNode.style.minWidth = cssLength(
+        this.attributes.layoutConstraints.minWidth
+      );
+      measuringNode.style.maxWidth = cssLength(
+        this.attributes.layoutConstraints.maxWidth
+      );
+      measuringNode.style.minHeight = cssLength(
+        this.attributes.layoutConstraints.minHeight
+      );
+      measuringNode.style.maxHeight = cssLength(
+        this.attributes.layoutConstraints.maxHeight
+      );
       const result = measureHtmlElement(measuringNode);
       this.setSize({ width: result.width, height: result.height });
     }

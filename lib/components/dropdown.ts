@@ -13,19 +13,11 @@ export class Dropdown extends ReactComponent {
     return true;
   }
 
-  extraAttributes() {
+  extraAttributes(): { overlay: any } {
     return {
-      overlay: React.createElement(
-        antd.Menu,
-        {},
-        this.attributes.overlay.children.map((it: any) => {
-          return React.createElement(antd.Menu.Item, it, [it.text]);
-        })
-      ),
+      overlay: ReactComponent.makeChildren(this, [
+        this.attributes.overlay,
+      ])?.[0],
     };
-  }
-
-  singleChildren() {
-    return React.createElement(antd.Typography.Text, { style: { cursor: "pointer" } }, [this.attributes.text]);
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:mpcore/mpcore.dart';
 
+import 'react_component.dart';
+
 enum TypographyType { secondary, success, warning, danger }
 
 class TypographyEditable {
@@ -29,7 +31,7 @@ class TypographyEditable {
 }
 
 class TypographyTitle extends StatelessWidget {
-  final String? text;
+  final List<AntComponent>? children;
   final bool? code;
   final bool? copyable;
   final bool? delete;
@@ -44,7 +46,8 @@ class TypographyTitle extends StatelessWidget {
   final Function? onClick;
 
   TypographyTitle({
-    this.text,
+    String? text,
+    List<AntComponent>? children,
     this.code,
     this.copyable,
     this.delete,
@@ -57,7 +60,10 @@ class TypographyTitle extends StatelessWidget {
     this.type,
     this.underline,
     this.onClick,
-  });
+  }) : this.children = (() {
+          if (children != null) return children;
+          if (text != null) return [AntText(text: text)];
+        })();
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +71,7 @@ class TypographyTitle extends StatelessWidget {
       builder: (context) => MPPlatformView(
         viewType: 'design.ant.typography.title',
         viewAttributes: {
-          'text': text,
+          'children': children,
           'level': level,
           'code': code,
           'copyable': copyable,
@@ -110,7 +116,7 @@ class TypographyTitle extends StatelessWidget {
 }
 
 class TypographyText extends StatelessWidget {
-  final String? text;
+  final List<AntComponent>? children;
   final bool? code;
   final bool? copyable;
   final bool? delete;
@@ -128,7 +134,8 @@ class TypographyText extends StatelessWidget {
   final Function? onClick;
 
   TypographyText({
-    this.text,
+    String? text,
+    List<AntComponent>? children,
     this.code,
     this.copyable,
     this.delete,
@@ -143,7 +150,10 @@ class TypographyText extends StatelessWidget {
     this.type,
     this.underline,
     this.onClick,
-  });
+  }) : this.children = (() {
+          if (children != null) return children;
+          if (text != null) return [AntText(text: text)];
+        })();
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +161,7 @@ class TypographyText extends StatelessWidget {
       builder: (context) => MPPlatformView(
         viewType: 'design.ant.typography.text',
         viewAttributes: {
-          'text': text,
+          'children': children,
           'level': level,
           'code': code,
           'copyable': copyable,
@@ -198,7 +208,7 @@ class TypographyText extends StatelessWidget {
 }
 
 class TypographyParagraph extends StatelessWidget {
-  final String? text;
+  final List<AntComponent>? children;
   final bool? code;
   final bool? copyable;
   final bool? delete;
@@ -215,7 +225,8 @@ class TypographyParagraph extends StatelessWidget {
   final Function? onClick;
 
   TypographyParagraph({
-    this.text,
+    String? text,
+    List<AntComponent>? children,
     this.code,
     this.copyable,
     this.delete,
@@ -229,7 +240,10 @@ class TypographyParagraph extends StatelessWidget {
     this.type,
     this.underline,
     this.onClick,
-  });
+  }) : this.children = (() {
+          if (children != null) return children;
+          if (text != null) return [AntText(text: text)];
+        })();
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +251,7 @@ class TypographyParagraph extends StatelessWidget {
       builder: (context) => MPPlatformView(
         viewType: 'design.ant.typography.paragraph',
         viewAttributes: {
-          'text': text,
+          'children': children,
           'level': level,
           'code': code,
           'copyable': copyable,

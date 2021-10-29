@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:mpcore/mpcore.dart';
 
+import 'react_component.dart';
+
 enum ButtonType {
   primary,
   dashed,
@@ -19,7 +21,7 @@ enum ButtonShape {
 }
 
 class Button extends StatelessWidget {
-  final String? text;
+  final List<AntComponent>? children;
   final ButtonType? type;
   final ButtonSize? size;
   final ButtonShape? shape;
@@ -31,10 +33,11 @@ class Button extends StatelessWidget {
   final Function? onClick;
   final String? href;
   final String? target;
-  final String? icon;
 
   Button({
-    this.text,
+    String? text,
+    AntIcon? icon,
+    List<AntComponent>? children,
     this.type,
     this.size,
     this.shape,
@@ -46,8 +49,12 @@ class Button extends StatelessWidget {
     this.onClick,
     this.href,
     this.target,
-    this.icon,
-  });
+  }) : this.children = (() {
+          if (children != null) return children;
+          if (text != null && icon != null) return [icon, AntText(text: text)];
+          if (text != null) return [AntText(text: text)];
+          if (icon != null) return [icon];
+        })();
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +62,7 @@ class Button extends StatelessWidget {
       builder: (context) => MPPlatformView(
         viewType: 'design.ant.button',
         viewAttributes: {
-          'text': text,
+          'children': children,
           'type': (() {
             switch (this.type) {
               case ButtonType.primary:
@@ -97,7 +104,6 @@ class Button extends StatelessWidget {
           'disabled': disabled,
           'href': href,
           'target': target,
-          'icon': icon,
         }..removeWhere((key, value) => value == null),
         onMethodCall: (methodName, arguments) {
           if (methodName == 'onClick') {

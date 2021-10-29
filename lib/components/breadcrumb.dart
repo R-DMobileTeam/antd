@@ -1,3 +1,4 @@
+import 'package:antd/plugin.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mpcore/mpcore.dart';
 
@@ -21,12 +22,7 @@ class Breadcrumb extends StatelessWidget {
             'separator': separator,
           }..removeWhere((key, value) => value == null),
           onMethodCall: (methodName, arguments) {
-            if (methodName == 'onClick') {
-              final index = (arguments as Map)['index'];
-              if (index is int) {
-                children[index].onClick?.call();
-              }
-            }
+            AntLink.handleMethodCall(methodName, arguments, children);
           },
         );
       },
@@ -34,24 +30,26 @@ class Breadcrumb extends StatelessWidget {
   }
 }
 
-class BreadcrumbItem {
-  final String? text;
-  final String? href;
-  final String? target;
-  final Function? onClick;
+class BreadcrumbItem extends AntInnerComponent {
+  final List<AntComponent>? children;
+  final bool? linkStyle;
 
   BreadcrumbItem({
-    this.text,
-    this.href,
-    this.target,
-    this.onClick,
-  });
-
-  Map toJson() {
-    return {
-      'text': text,
-      'href': href,
-      'target': target,
-    }..removeWhere((key, value) => value == null);
-  }
+    String? text,
+    AntIcon? icon,
+    List<AntComponent>? children,
+    this.linkStyle = false,
+  })  : this.children = (() {
+          if (children != null) return children;
+          if (text != null && icon != null) return [icon, AntText(text: text)];
+          if (text != null) return [AntText(text: text)];
+          if (icon != null) return [icon];
+        })(),
+        super(
+          componentName: 'antd.Breadcrumb.Item',
+          attributes: {
+            "href": linkStyle == true ? "javascript: void(0);" : null
+          },
+          children: children,
+        );
 }

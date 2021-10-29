@@ -39,8 +39,8 @@ class AntDesign {
 
   static async installReact() {
     await this.loadScript(
-      // "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js"
-      "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.js"
+      "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js"
+      // "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.js"
     );
     await this.loadScript(
       "https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js"
