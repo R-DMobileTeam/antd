@@ -3,7 +3,7 @@
 import { Breadcrumb } from "./components/breadcrumb";
 import { Button } from "./components/button";
 import { Divider } from "./components/divider";
-import { Dropdown } from "./components/dropdown";
+import { Dropdown, DropdownButton } from "./components/dropdown";
 import {
   TypographyParagraph,
   TypographyText,
@@ -72,3 +72,4 @@ pluginRegisterer.registerPlatformView(
 pluginRegisterer.registerPlatformView("design.ant.divider", Divider);
 pluginRegisterer.registerPlatformView("design.ant.breadcrumb", Breadcrumb);
 pluginRegisterer.registerPlatformView("design.ant.dropdown", Dropdown);
+pluginRegisterer.registerPlatformView("design.ant.dropdown.button", DropdownButton);

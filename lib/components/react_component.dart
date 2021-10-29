@@ -1,3 +1,5 @@
+import 'package:antd/plugin.dart';
+
 abstract class AntComponent {}
 
 class AntText extends AntComponent {
@@ -58,6 +60,9 @@ class AntLink extends AntComponent {
       if (target != null && target is AntLink) {
         target.onClick?.call();
       }
+      if (target != null && target is MenuItem) {
+        target.onClick?.call();
+      }
     }
   }
 
@@ -107,11 +112,19 @@ class AntInnerComponent extends AntComponent {
     this.children,
   });
 
+  Map extraAttributes() {
+    return {};
+  }
+
   Map toJson() {
+    final attributes = this.attributes ?? {};
+    attributes
+      ..addAll(extraAttributes())
+      ..removeWhere((key, value) => value == null);
     return {
       'type': 'innerComponent',
       'componentName': componentName,
-      'attributes': attributes?..removeWhere((key, value) => value == null),
+      'attributes': attributes,
       'children': children,
     };
   }

@@ -14,10 +14,18 @@ class Menu extends AntInnerComponent {
 
 class MenuItem extends AntInnerComponent {
   final List<AntComponent>? children;
+  final bool? danger;
+  final bool? disabled;
+  final String? title;
+  final Function? onClick;
 
   MenuItem({
     String? text,
     AntIcon? icon,
+    this.danger,
+    this.disabled,
+    this.title,
+    this.onClick,
     List<AntComponent>? children,
   })  : this.children = (() {
           if (children != null) return children;
@@ -27,7 +35,19 @@ class MenuItem extends AntInnerComponent {
         })(),
         super(
           componentName: 'antd.Menu.Item',
-          attributes: {},
+          attributes: {
+            'danger': danger,
+            'disabled': disabled,
+            'title': title,
+          }..removeWhere((key, value) => value == null),
           children: children,
         );
+
+  @override
+  Map extraAttributes() {
+    return super.extraAttributes()
+      ..addAll({
+        'onClick': onClick != null ? hashCode : null,
+      });
+  }
 }

@@ -27,6 +27,7 @@ export class ReactComponent extends MPPlatformView {
   static makeChildren(owner: ReactComponent, children: any[]): any[] {
     return children
       ?.map((it: any) => {
+        if (!it) return undefined;
         if (it.type === "text") {
           return React.createElement("span", {}, it.text);
         } else if (it.type === "icon") {
@@ -49,9 +50,16 @@ export class ReactComponent extends MPPlatformView {
         } else if (it.type === "innerComponent") {
           try {
             let clazz = this.getComponentClass(it.componentName);
+            let attributes = { ...it.attributes };
+            if (attributes.onClick) {
+              var hashCode = attributes.onClick;
+              attributes.onClick = () => {
+                owner.invokeMethod("onClick", { target: hashCode });
+              };
+            }
             return React.createElement(
               clazz,
-              it.attributes,
+              attributes,
               this.makeChildren(owner, it.children)
             );
           } catch (error) {}
